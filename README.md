@@ -1,7 +1,9 @@
 # choose_the_thing
-This program is a massive work in progress. Information will be added as it comes. 
+This program is a large work in progress. Information will be added as it comes. 
 
-To come:
--GUI
--Better commenting
--Code cleanup
+Todo: 
+```
+GUI
+Better commenting
+Code cleanup
+```

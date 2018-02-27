@@ -1,5 +1,8 @@
+#time between scanning the tangle for new song votes
 REFRESH_TIME = 10 #(seconds)
+#add extra time between song switching
 SONG_SWITCH_DELAY = 2 #(seconds)
+#minimum transaction value to be read into the program
 MINIMUM_TRANSACTION_VALUE = 0 #(iota)
 
 from transaction_monitor import TransactionMonitor
@@ -14,7 +17,9 @@ def main():
     finished_transactions = {}
     #location of songs on the computer
     reference_list = os.listdir("C:\\Users\Honey Booboo\\Desktop\\songs\\")
+    #iota address to monitor. if using the same address, old songs will be loaded to playlist
     address = 'BJAKMIXYBLAAPKLBCGHELQCSKOMZLSAYLOHDBOYRJFQJIHBWCCCIUBVLQKYPTHWVBQWTZM9JGMAPFUCBCBCSRTKJLY'
+    #any node can be chosen
     node = 'http://node03.iotatoken.nl:15265'
 
     listener = TransactionMonitor(address, node, finished_transactions, MINIMUM_TRANSACTION_VALUE)
@@ -52,16 +57,8 @@ def main():
             next_song = chooser.pick_next_song()
             song_length, song_start_time = player.play_song(next_song)
             print(next_song)
-            
-        
-
-        
-
-
-
-
-
-
-
 
 main()
+
+
+

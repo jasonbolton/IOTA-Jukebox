@@ -14,6 +14,5 @@ Todo:
 ```
 -Better commenting
 -Code cleanup
--Skip function
 -should user input own address?
 ```

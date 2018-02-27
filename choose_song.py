@@ -23,7 +23,8 @@ class ChooseSong:
     def pick_next_song(self):
         """this method takes the first entry
         of the playlist, removes it, then returns
-        it to played."""
+        it to played. also functions as a skip
+        button."""
         next_song = self._play_list[0]
         print(next_song)
         print(self._play_list)

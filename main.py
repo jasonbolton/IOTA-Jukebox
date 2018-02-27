@@ -14,6 +14,8 @@ import time
 import os
 
 def main():
+    """this is the main loop for the program. the iota address will
+    be scanned for song votes and added to a playlist, then played."""
     finished_transactions = {}
     #location of songs on the computer
     reference_list = os.listdir("C:\\Users\Honey Booboo\\Desktop\\songs\\")
@@ -45,8 +47,8 @@ def main():
     
     while True:
         """
-        get song length, start a timer, if song length - timer < 0
-        get a new song
+        get song length, start a timer, if song length - timer < 0,
+        get a new song. to stop the program, close the console.
         """
         if time.time() - transaction_time > REFRESH_TIME:
             song_value_list, transaction_time = listener.get_transactions()

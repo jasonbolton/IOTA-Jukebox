@@ -1,4 +1,3 @@
-"""wow this actually worked. took a while though. must have a pow node"""
 from iota import *
 
 class MessageSender:

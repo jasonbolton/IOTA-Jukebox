@@ -12,8 +12,7 @@ def main():
     display_reference_list(reference_list)
     print(reference_list)
     song = reference_list[1]
-    """sends a song out to the tangle. comment
-    out when not desired."""
+    #sends a song out to the tangle. comment out when not desired.
     #vote_for_song(song, address, api)
 
 def get_tangle_info(spent_transactions, api, address):
@@ -30,6 +29,7 @@ def get_tangle_info(spent_transactions, api, address):
 def decode_message(message_list): 
     for message in message_list:
         message = message.decode()
+        print(message)
         for i in range(len(message)):
             if message[i] == "*":
                 return message[i:]

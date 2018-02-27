@@ -6,15 +6,11 @@ class Encoder:
     def __init__(self):
         pass
 
-    def encode_address(self, address):
-        header_footer = TryteString.from_unicode("??")
-        return header_footer + address + header_footer
-
     def encode_play_list(self, play_list):
         encoded_play_list = "::"
         for song in play_list:
             encoded_play_list += song
-            encoded_play_list += "*"
+            encoded_play_list += ":"
         encoded_play_list += ":"
         encoded_play_list = TryteString.from_unicode(encoded_play_list)
         return encoded_play_list

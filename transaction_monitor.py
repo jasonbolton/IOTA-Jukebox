@@ -2,7 +2,8 @@ from iota import *
 import time
 
 class TransactionMonitor:
-
+    """this class monitors an address on the tangle
+    for song votes."""
     def __init__(self, address, node, finished_transactions, minimum_value):
         self._address = TryteString(address)
         self._node = node
@@ -21,6 +22,9 @@ class TransactionMonitor:
         return self._node
 
     def extract_song(self, string):
+        """given a string message, this function
+        decodes and removes non-song information
+        and returns the cleaned string."""
         song_name = ""
         for letter in string:
             if letter != "9":
@@ -29,6 +33,13 @@ class TransactionMonitor:
         return song_name
 
     def get_transactions(self):
+        """this method cycles through the transactions
+        on an address in the tangle. if the transaction
+        tag is in the dictionary self._finished_transactions,
+        the message is not processed. if not, the message is
+        stripped to access the song data. the data is added
+        to a list to be returned and the tag is added to finished
+        transactions, along with a time-stamp of finish-time."""
         self._new_transactions = []
         transaction_dict = self._api.find_transactions(bundles=None, \
                             addresses=[self._address], tags=None, approvees=None)

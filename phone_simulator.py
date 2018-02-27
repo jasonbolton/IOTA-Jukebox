@@ -1,7 +1,6 @@
 REFERENCE_LIST_DECODER_CHAR = "*"
 PLAY_LIST_DECODER_CHAR = ":"
 
-
 from iota import *
 import random
 
@@ -12,22 +11,22 @@ def main():
     decodes and displays that information, and is able to vote
     for songs based on that information."""
     spent_transactions = {}
-    # address to monitor
+    # address to monitor.
     address = 'BJAKMIXYBLAAPKLBCGHELQCSKOMZLSAYLOHDBOYRJFQJIHBWCCCIUBVLQKYPTHWVBQWTZM9JGMAPFUCBCBCSRTKJLY'
-    # a proof of work node is required
+    # a proof of work node is required.
     node = 'https://iotanode.us:443'
     api = Iota(node)
 
-    # reads in the encoded messages from the tangle
+    # reads in the encoded messages from the tangle.
     encoded_message_list = get_tangle_info(spent_transactions, api, address)
 
-    # decodes the reference list, processes, displays
+    # decodes the reference list, processes, displays.
     decoded_message = decode_message_list(encoded_message_list, REFERENCE_LIST_DECODER_CHAR)
     reference_list = make_message_list(decoded_message, REFERENCE_LIST_DECODER_CHAR)
     display_song_list(reference_list)
     print(reference_list)
     
-    # decodes the play list, processes, displays
+    # decodes the play list, processes, displays.
     decoded_message = decode_message_list(encoded_message_list, PLAY_LIST_DECODER_CHAR)
     play_list = make_message_list(decoded_message, PLAY_LIST_DECODER_CHAR)
     display_song_list(play_list)

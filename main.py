@@ -1,8 +1,8 @@
-#time between scanning the tangle for new song votes
+# time between scanning the tangle for new song votes.
 REFRESH_TIME = 10 #(seconds)
-#add extra time between song switching
+# add extra time between song switching.
 SONG_SWITCH_DELAY = 2 #(seconds)
-#minimum transaction value to be read into the program
+# minimum transaction value to be read into the program.
 MINIMUM_TRANSACTION_VALUE = 0 #(iota)
 
 from transaction_monitor import TransactionMonitor
@@ -17,11 +17,11 @@ def main():
     """this is the main loop for the program. the iota address will
     be scanned for song votes and added to a playlist, then played."""
     finished_transactions = {}
-    #location of songs on the computer
+    # location of songs on the computer. only songs can be in the folder at the moment.
     reference_list = os.listdir("C:\\Users\Honey Booboo\\Desktop\\songs\\")
-    #iota address to monitor. if using the same address, old songs will be loaded to playlist
+    # iota address to monitor. if using the same address, old songs will be loaded to playlist.
     address = 'BJAKMIXYBLAAPKLBCGHELQCSKOMZLSAYLOHDBOYRJFQJIHBWCCCIUBVLQKYPTHWVBQWTZM9JGMAPFUCBCBCSRTKJLY'
-    #any node can be chosen
+    # any node can be chosen.
     node = 'http://node03.iotatoken.nl:15265'
 
     listener = TransactionMonitor(address, node, finished_transactions, MINIMUM_TRANSACTION_VALUE)
@@ -30,9 +30,9 @@ def main():
     send_bot = MessageSender(address)
     encoder = Encoder()
 
-##send a message to the tangle with the encoded reference list
-##    encoded_list = encoder.encode_reference_list(reference_list)
-##    send_bot.send_message(encoded_list)
+    # send a message to the tangle with the encoded reference list.
+    #encoded_list = encoder.encode_reference_list(reference_list)
+    #send_bot.send_message(encoded_list)
     
     song_value_list, transaction_time = listener.get_transactions()
     print(song_value_list)
@@ -44,7 +44,7 @@ def main():
     song_length, song_start_time = player.play_song(next_song)
     print(next_song)
 
-##send a message to the tangle with the encoded play list
+    # send a message to the tangle with the encoded play list.
 ##    current_play_list = chooser.get_play_list()
 ##    print(current_play_list)
 ##    encoded_play_list = encoder.encode_play_list(current_play_list)

@@ -2,12 +2,16 @@ from iota import *
 import random
 
 class MessageSender:
-
+    """this class handles the sending of transactions
+    requested by the main program. a proof of work node
+    is required."""
     def __init__(self, send_address):
         self._send_address = send_address
         self._api = Iota('https://iotanode.us:443')
 
     def send_message(self, message):
+        """a random tag transaction with a passed-in
+        pre-encrypted message is sent using this method."""
         random_tag = ""
         for i in range(27):
             rand_char = chr(random.randint(80, 90))

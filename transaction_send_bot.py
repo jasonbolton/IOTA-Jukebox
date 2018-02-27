@@ -1,4 +1,5 @@
 from iota import *
+import random
 
 class MessageSender:
 
@@ -7,11 +8,15 @@ class MessageSender:
         self._api = Iota('https://iotanode.us:443')
 
     def send_message(self, message):
-        tag = ""
-        for i in range(27 - len(song) - 1):
+        random_tag = ""
+        for i in range(27):
             rand_char = chr(random.randint(80, 90))
-            tag += rand_char
-        tag = TryteString.from_unicode(tag)
+            random_tag += rand_char
+        random_tag = TryteString.from_unicode(random_tag)
+        if len(random_tag) > 27:
+            excess = len(random_tag) - 27
+            random_tag = random_tag[excess:]
+        
         self._api.send_transfer(
           depth = 100,
           transfers = [
@@ -21,7 +26,7 @@ class MessageSender:
                   self._send_address,
                 ),
               value = 0,
-              tag = Tag(tag),
+              tag = Tag(random_tag),
               message = message,
             ),
           ],

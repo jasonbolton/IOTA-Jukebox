@@ -44,6 +44,12 @@ def main():
     song_length, song_start_time = player.play_song(next_song)
     print(next_song)
 
+##send a message to the tangle with the encoded play list
+##    current_play_list = chooser.get_play_list()
+##    print(current_play_list)
+##    encoded_play_list = encoder.encode_play_list(current_play_list)
+##    print(encoded_play_list)
+##    send_bot.send_message(encoded_play_list)
     
     while True:
         """

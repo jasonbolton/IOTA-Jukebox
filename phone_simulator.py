@@ -6,13 +6,24 @@ def main():
     address = 'BJAKMIXYBLAAPKLBCGHELQCSKOMZLSAYLOHDBOYRJFQJIHBWCCCIUBVLQKYPTHWVBQWTZM9JGMAPFUCBCBCSRTKJLY'
     node = 'https://iotanode.us:443'
     api = Iota(node)
+    
     encoded_message_list = get_tangle_info(spent_transactions, api, address)
-    decoded_message = decode_message(encoded_message_list)
+
+    
+    decoded_message = decode_reference_list_message(encoded_message_list)
     reference_list = make_reference_list(decoded_message)
-    display_reference_list(reference_list)
+
+    
+    display_song_list(reference_list)
     print(reference_list)
-    song = reference_list[1]
+
+    decoded_message = decode_play_list_message(encoded_message_list)
+    play_list = make_play_list(decoded_message)
+    display_song_list(play_list)
+    print(play_list)
+    
     #sends a song out to the tangle. comment out when not desired.
+    #song = reference_list[1]
     #vote_for_song(song, address, api)
 
 def get_tangle_info(spent_transactions, api, address):
@@ -26,12 +37,20 @@ def get_tangle_info(spent_transactions, api, address):
             message_list.append(transaction.signature_message_fragment)
     return message_list
 
-def decode_message(message_list): 
+def decode_reference_list_message(message_list): 
     for message in message_list:
         message = message.decode()
         print(message)
         for i in range(len(message)):
             if message[i] == "*":
+                return message[i:]
+
+def decode_play_list_message(message_list): 
+    for message in message_list:
+        message = message.decode()
+        print(message)
+        for i in range(len(message)):
+            if message[i] == ":":
                 return message[i:]
             
 def make_reference_list(message):
@@ -41,10 +60,18 @@ def make_reference_list(message):
         if len(song_split[i]) > 0:
             clean_song_split.append(song_split[i])
     return clean_song_split
+
+def make_play_list(message):
+    song_split = message.split(":")
+    clean_song_split = []
+    for i in range(len(song_split)):
+        if len(song_split[i]) > 0:
+            clean_song_split.append(song_split[i])
+    return clean_song_split
             
-def display_reference_list(reference_list):
-    for i in range(len(reference_list)):
-        print(str(i) + ":", reference_list[i])
+def display_song_list(song_list):
+    for i in range(len(song_list)):
+        print(str(i) + ":", song_list[i])
 
 def vote_for_song(song, address, api):
     random_tag = ""

@@ -8,7 +8,7 @@ To run the main program, use main.py. To vote for songs, use the phone_simulator
 
 Dependencies
 
-This program was made with Python 3.6.4. To run this program, pyota needs to be installed. You can find pyota at https://github.com/iotaledger/iota.lib.py
+This program was made with Python 3.6.4. To run this program, pyota needs to be installed. You can find pyota at: https://github.com/iotaledger/iota.lib.py
 
 Todo: 
 ```
@@ -18,7 +18,9 @@ Todo:
 -Prompt for file-path on start
 -Make GUI - Try kivy, pyqt
 -Pass in file path to play_song class
--Only add songs to reference list if they have correct file ending(not sure which work, start with .mp3, .m4a, .wav)
+-Only add songs to reference list if they have correct file ending(start with .mp3, .m4a, .wav)
 -Implement qr generator after GUI
 -Add more instruction info to readme
+-Add License
+-Test the IOTA sandbox POW node: https://powbox.testnet.iota.org/
 ```

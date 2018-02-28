@@ -1,3 +1,5 @@
+import random
+
 class ChooseSong:
     """"this class holds the song reference list and
     the current playlist. it handles updating the order
@@ -24,7 +26,14 @@ class ChooseSong:
         """this method takes the first entry
         of the playlist, removes it, then returns
         it to played. also functions as a skip
-        button."""
+        button. if no songs are in the playlist,
+        a random song is played from the reference
+        list"""
+        if len(play_list) < 1:
+            reference_length = len(self._reference_list)
+            rand_int = random.randint(0, reference_length - 1)
+            print(self._reference_list[rand_int])
+            return self._reference_list[rand_int]
         next_song = self._play_list[0]
         print(next_song)
         print(self._play_list)

@@ -17,16 +17,18 @@ def main():
     """this is the main loop for the program. the iota address will
     be scanned for song votes and added to a playlist, then played."""
     finished_transactions = {}
-    # location of songs on the computer. only songs can be in the folder at the moment.
-    reference_list = os.listdir("C:\\Users\Honey Booboo\\Desktop\\songs\\")
+    # location of songs on the computer. 
+    #song_file_path = input("Enter location of songs on the computer: ")
+    song_file_path = "C:\\Users\Honey Booboo\\Desktop\\songs\\"
+    reference_list = os.listdir(song_file_path)
     # iota address to monitor. if using the same address, old songs will be loaded to playlist.
     address = 'BJAKMIXYBLAAPKLBCGHELQCSKOMZLSAYLOHDBOYRJFQJIHBWCCCIUBVLQKYPTHWVBQWTZM9JGMAPFUCBCBCSRTKJLY'
+    print("The broadcast address is: " + address)
     # any node can be chosen.
     node = 'http://node03.iotatoken.nl:15265'
 
     listener = TransactionMonitor(address, node, finished_transactions, MINIMUM_TRANSACTION_VALUE)
-    chooser = ChooseSong(reference_list)
-    player = PlaySong()
+    chooser = ChooseSong(reference_list, song_file_path)
     send_bot = MessageSender(address)
     encoder = Encoder()
 
@@ -39,17 +41,17 @@ def main():
     song_value_list = encoder.decode_list(song_value_list)
     print(song_value_list)
 
-    chooser.update_current_order(song_value_list)
-    next_song = chooser.pick_next_song()
-    song_length, song_start_time = player.play_song(next_song)
-    print(next_song)
-
     # send a message to the tangle with the encoded play list.
 ##    current_play_list = chooser.get_play_list()
 ##    print(current_play_list)
 ##    encoded_play_list = encoder.encode_play_list(current_play_list)
 ##    print(encoded_play_list)
 ##    send_bot.send_message(encoded_play_list)
+
+    chooser.update_current_order(song_value_list)
+    next_song = chooser.pick_next_song()
+    song_length, song_start_time = chooser.play_song(next_song)
+    print(next_song)
     
     while True:
         """
@@ -63,7 +65,7 @@ def main():
             print(song_value_list)
         if time.time() - song_start_time > song_length + SONG_SWITCH_DELAY:
             next_song = chooser.pick_next_song()
-            song_length, song_start_time = player.play_song(next_song)
+            song_length, song_start_time = chooser.play_song(next_song)
             print(next_song)
 
 main()

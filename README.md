@@ -15,12 +15,10 @@ Todo:
 -Better commenting
 -Code cleanup
 -Implement address generation on start - print address to add to phone_simulator
--Prompt for file-path on start
 -Make GUI - Try kivy, pyqt
--Pass in file path to play_song class
--Only add songs to reference list if they have correct file ending(start with .mp3, .m4a, .wav)
 -Implement qr generator after GUI
 -Add more instruction info to readme
 -Add License
 -Test the IOTA sandbox POW node: https://powbox.testnet.iota.org/
+-Add try/except when sending transactions until messages are sent.
 ```

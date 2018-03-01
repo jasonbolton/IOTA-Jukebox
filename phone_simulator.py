@@ -33,8 +33,8 @@ def main():
     print(play_list)
     
     # sends a song out to the tangle. comment out when not desired.
-    #song = reference_list[1]
-    #vote_for_song(song, address, api)
+    song = reference_list[3]
+    vote_for_song(song, address, api)
 
 def get_tangle_info(spent_transactions, api, address):
     """reads in transactions from the tangle. if the tag has already
@@ -77,23 +77,28 @@ def display_song_list(song_list):
     for i in range(len(song_list)):
         print(str(i) + ":", song_list[i])
 
+def make_random_tag():
+    """this method constructs a random tag to include
+    in outgoing transactions."""
+    construct_tag = ""
+    for i in range(27):
+        rand_char = chr(random.randint(80, 90))
+        construct_tag += rand_char
+    construct_tag = TryteString.from_unicode(construct_tag)
+    if len(construct_tag) > 27:
+        excess = len(construct_tag) - 27
+        construct_tag = construct_tag[excess:]
+    return construct_tag
+
 def vote_for_song(song, address, api):
     """this function is used for encoding and voting
     for a song to play. a song name is enclosed by
     two ?? and encoded to trytes. this is the transaction
     messsage. a random tag is generated. the transaction
     is sent to the monitored address."""
-    random_tag = ""
+    random_tag = make_random_tag()
     song = "??" + song + "??"
     song = TryteString.from_unicode(song)
-    print(song)
-    for i in range(27):
-        rand_char = chr(random.randint(80, 90))
-        random_tag += rand_char
-    if len(random_tag) > 27:
-        excess = len(random_tag) - 27
-        random_tag = random_tag[excess:]
-    print(len(random_tag))
     print(song)
     api.send_transfer(
           depth = 100,

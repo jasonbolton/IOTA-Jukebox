@@ -4,7 +4,7 @@ This program is a large work in progress. Information will be added as it comes.
 
 Instructions
 
-To run the main program, use main.py. To vote for songs, use the phone_simulator.py.
+This program reads in song info from a folder on your computer. The program sends the song reference list to an address on the tangle then listens for incoming song votes to play. The phone simulator program, which acts as a mobile app, reads in the song reference list and is able to vote for songs to play on the tangle. To run the main program, use main.py. To vote for songs, use the phone_simulator.py. At the current time, the program is loaded with my file-path and an address on the tangle with reference list data and multiple song votes.
 
 Dependencies
 

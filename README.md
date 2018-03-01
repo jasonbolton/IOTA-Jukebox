@@ -20,5 +20,4 @@ Todo:
 -Add more instruction info to readme
 -Add License
 -Test the IOTA sandbox POW node: https://powbox.testnet.iota.org/
--Add try/except when sending transactions until messages are sent.
 ```

@@ -1,5 +1,6 @@
 from iota import *
 import random
+import time
 
 class MessageSender:
     """this class handles the sending of transactions
@@ -26,37 +27,28 @@ class MessageSender:
         """a random tag transaction with a passed-in
         pre-encrypted message is sent using this method."""
         random_tag = self.make_random_tag()
-        
-        self._api.send_transfer(
-          depth = 100,
-          transfers = [
-            ProposedTransaction(
-              address =
-                Address(
-                  self._send_address,
-                ),
-              value = 0,
-              tag = Tag(random_tag),
-              message = message,
-            ),
-          ],
-        )
-    
-    
 
-##
-##api.send_transfer(
-##  depth = 100,
-##  transfers = [
-##    ProposedTransaction(
-##      # Recipient of the transfer.
-##      address =
-##        Address(
-##          ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_2,
-##        ),
-##      value = 0,
-##      tag = Tag(b'EXAMPLE'),
-##      message = TryteString.from_string('Hello!'),
-##    ),
-##  ],
-##)
+        send_confirmation = False
+        while not send_confirmation:
+            try:
+                print("try")
+                self._api.send_transfer(
+                  depth = 100,
+                  transfers = [
+                    ProposedTransaction(
+                      address =
+                        Address(
+                          self._send_address,
+                        ),
+                      value = 0,
+                      tag = Tag(random_tag),
+                      message = message,
+                    ),
+                  ],
+                )
+                send_confirmation = True
+            except:
+                print("except")
+                time.sleep(2)
+                pass
+            

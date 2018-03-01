@@ -3,6 +3,7 @@ PLAY_LIST_DECODER_CHAR = ":"
 
 from iota import *
 import random
+import time
 
 def main():
     """this is the main program for the phone simulation
@@ -100,19 +101,28 @@ def vote_for_song(song, address, api):
     song = "??" + song + "??"
     song = TryteString.from_unicode(song)
     print(song)
-    api.send_transfer(
-          depth = 100,
-          transfers = [
-            ProposedTransaction(
-              address =
-                Address(
-                  address,
+    send_confirmation = False
+    while not send_confirmation:
+        try:
+            print("try")
+            api.send_transfer(
+              depth = 100,
+              transfers = [
+                ProposedTransaction(
+                  address =
+                    Address(
+                      address,
+                    ),
+                  value = 0,
+                  tag = Tag(random_tag),
+                  message = song,
                 ),
-              value = 0,
-              tag = Tag(random_tag),
-              message = song,
-            ),
-          ],
-        )
+              ],
+            )
+            send_confirmation = True
+        except:
+            print("except")
+            time.sleep(2)
+            pass
     
 main()

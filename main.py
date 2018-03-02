@@ -7,7 +7,6 @@ MINIMUM_TRANSACTION_VALUE = 0 #(iota)
 
 from transaction_monitor import TransactionMonitor
 from choose_song import ChooseSong
-from play_song import PlaySong
 from encoder import Encoder
 from transaction_send_bot import MessageSender
 import time
@@ -22,8 +21,10 @@ def main():
     song_file_path = "C:\\Users\Honey Booboo\\Desktop\\songs\\"
     reference_list = os.listdir(song_file_path)
     # iota address to monitor. if using the same address, old songs will be loaded to playlist.
+    #address = input("Enter IOTA address to broadcast to: ")
     address = 'BJAKMIXYBLAAPKLBCGHELQCSKOMZLSAYLOHDBOYRJFQJIHBWCCCIUBVLQKYPTHWVBQWTZM9JGMAPFUCBCBCSRTKJLY'
     print("The broadcast address is: " + address)
+    print()
     # any node can be chosen.
     node = 'http://node03.iotatoken.nl:15265'
 
@@ -35,23 +36,27 @@ def main():
     # send a message to the tangle with the encoded reference list.
     #encoded_list = encoder.encode_reference_list(reference_list)
     #send_bot.send_message(encoded_list)
-    
+    #print("The reference song list was successfully attached to the tangle")
+
+    reference_list = chooser.determine_valid_format(reference_list)
+    print("The reference song list is:")
+    print(reference_list)
+    print()
+
     song_value_list, transaction_time = listener.get_transactions()
-    print(song_value_list)
     song_value_list = encoder.decode_list(song_value_list)
-    print(song_value_list)
 
     # send a message to the tangle with the encoded play list.
-##    current_play_list = chooser.get_play_list()
-##    print(current_play_list)
-##    encoded_play_list = encoder.encode_play_list(current_play_list)
-##    print(encoded_play_list)
-##    send_bot.send_message(encoded_play_list)
+    #current_play_list = chooser.get_play_list()
+    #print(current_play_list)
+    #encoded_play_list = encoder.encode_play_list(current_play_list)
+    #print(encoded_play_list)
+    #send_bot.send_message(encoded_play_list)
+    #print("The song playlist was successfully attached to the tangle")
 
     chooser.update_current_order(song_value_list)
     next_song = chooser.pick_next_song()
     song_length, song_start_time = chooser.play_song(next_song)
-    print(next_song)
     
     while True:
         """
@@ -62,11 +67,9 @@ def main():
             song_value_list, transaction_time = listener.get_transactions()
             song_value_list = encoder.decode_list(song_value_list)
             chooser.update_current_order(song_value_list)
-            print(song_value_list)
         if time.time() - song_start_time > song_length + SONG_SWITCH_DELAY:
             next_song = chooser.pick_next_song()
             song_length, song_start_time = chooser.play_song(next_song)
-            print(next_song)
 
 main()
 

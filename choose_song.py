@@ -41,6 +41,9 @@ class ChooseSong:
         for song in new_song_list:
             if song in self._reference_list:
                 self._play_list.append(song)
+        print("The song playlist is:")
+        print(self._play_list)
+        print()
 
     def pick_next_song(self):
         """this method takes the first entry
@@ -55,10 +58,9 @@ class ChooseSong:
             print(self._reference_list[rand_int])
             return self._reference_list[rand_int]
         next_song = self._play_list[0]
-        print(next_song)
-        print(self._play_list)
         self._play_list.pop(0)
-        print(self._play_list)
+        print("The next song is " + next_song)
+        print()
         return next_song
 
     def play_song(self, song):
@@ -67,7 +69,6 @@ class ChooseSong:
         song and the start-time are returned."""
         webbrowser.open(self._song_file_path + song)
         tag = TinyTag.get(self._song_file_path + song)
-        print(tag.duration)
         return tag.duration, time.time()
         
         

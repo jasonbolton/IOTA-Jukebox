@@ -40,6 +40,7 @@ class TransactionMonitor:
         stripped to access the song data. the data is added
         to a list to be returned and the tag is added to finished
         transactions, along with a time-stamp of finish-time."""
+        print("Searching the tangle for song votes...")
         self._new_transactions = []
         transaction_dict = self._api.find_transactions(bundles=None, \
                             addresses=[self._address], tags=None, approvees=None)
@@ -50,8 +51,9 @@ class TransactionMonitor:
                transaction.value >= self._minimum_value:
                 self._finished_transactions[transaction.tag] = 0
                 song = self.extract_song(str(transaction.signature_message_fragment))
-                print(song)
                 self._new_transactions.append(song)
+        print("Complete")
+        print()
         return self._new_transactions, time.time()
         
 

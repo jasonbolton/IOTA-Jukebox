@@ -15,9 +15,7 @@ class Encoder:
             encoded_play_list += song
             encoded_play_list += ":"
         encoded_play_list += ":"
-        print(encoded_play_list)
         encoded_play_list = TryteString.from_unicode(encoded_play_list)
-        print(encoded_play_list)
         return encoded_play_list
 
     def encode_reference_list(self, reference_list):
@@ -36,15 +34,14 @@ class Encoder:
         the decoded_list to be played."""
         decoded_list = []
         for song in song_list:
-            print(song)
             if "IBIB" in song:
-                print(song)
                 song = TryteString.from_unicode(song)
                 song = song.decode()
-                print(song)
                 song = song.strip("??")
-                print(song)
                 decoded_list.append(song)
+        print("The new song votes found on the tangle are:")
+        print(decoded_list)
+        print()
         return decoded_list
 
 

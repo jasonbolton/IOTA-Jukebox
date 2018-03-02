@@ -8,10 +8,10 @@ Dependencies
 
 This program was made with Python 3.6.4. To run this program, pyota needs to be installed. You can find pyota at: https://github.com/iotaledger/iota.lib.py
 
+
 Todo: 
 ```
 -General improvements
--Make GUI - Try kivy, pyqt
+-Make GUI - Try kivy
 -Implement qr generator after GUI
--Add License
 ```

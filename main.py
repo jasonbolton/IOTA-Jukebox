@@ -16,17 +16,12 @@ def main():
     """this is the main loop for the program. the iota address will
     be scanned for song votes and added to a playlist, then played."""
     finished_transactions = {}
-    # location of songs on the computer. 
-    #song_file_path = input("Enter location of songs on the computer: ")
-    song_file_path = "C:\\Users\Honey Booboo\\Desktop\\songs\\"
+    # location of songs on the computer.
+    print("(Example: C:\\Users\Honey Booboo\\Desktop\\songs\\)")
+    song_file_path = input("Enter location of songs on the computer: ")
     reference_list = os.listdir(song_file_path)
-    # iota address to monitor. if using the same address, old songs will be loaded to playlist.
-    #address = input("Enter IOTA address to broadcast to: ")
-    #address = 'BJAKMIXYBLAAPKLBCGHELQCSKOMZLSAYLOHDBOYRJFQJIHBWCCCIUBVLQKYPTHWVBQWTZM9JGMAPFUCBCBCSRTKJLY'
-    
-    # any node can be chosen.
-    #node = 'http://node03.iotatoken.nl:15265'
 
+    # initializing class objects
     listener = TransactionMonitor(finished_transactions, MINIMUM_TRANSACTION_VALUE)
     address = listener.get_address()
     print("The broadcast address is: " + str(address))

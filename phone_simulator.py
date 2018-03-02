@@ -13,9 +13,9 @@ def main():
     for songs based on that information."""
     spent_transactions = {}
     # address to monitor.
-    #address = 'BJAKMIXYBLAAPKLBCGHELQCSKOMZLSAYLOHDBOYRJFQJIHBWCCCIUBVLQKYPTHWVBQWTZM9JGMAPFUCBCBCSRTKJLY'
     address = input("Please enter an IOTA address to monitor: ")
     print()
+    
     # a proof of work node is required.
     node = 'https://iotanode.us:443'
     api = Iota(node)
@@ -27,7 +27,6 @@ def main():
     # decodes the reference list, processes, displays.
     decoded_message = decode_message_list(encoded_message_list, REFERENCE_LIST_DECODER_CHAR)
     reference_list = make_message_list(decoded_message, REFERENCE_LIST_DECODER_CHAR)
-    
     
     # decodes the play list, processes, displays.
     #decoded_message = decode_message_list(encoded_message_list, PLAY_LIST_DECODER_CHAR)

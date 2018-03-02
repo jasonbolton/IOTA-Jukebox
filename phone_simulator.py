@@ -13,33 +13,46 @@ def main():
     for songs based on that information."""
     spent_transactions = {}
     # address to monitor.
-    address = 'BJAKMIXYBLAAPKLBCGHELQCSKOMZLSAYLOHDBOYRJFQJIHBWCCCIUBVLQKYPTHWVBQWTZM9JGMAPFUCBCBCSRTKJLY'
+    #address = 'BJAKMIXYBLAAPKLBCGHELQCSKOMZLSAYLOHDBOYRJFQJIHBWCCCIUBVLQKYPTHWVBQWTZM9JGMAPFUCBCBCSRTKJLY'
+    address = input("Please enter an IOTA address to monitor: ")
+    print()
     # a proof of work node is required.
     node = 'https://iotanode.us:443'
     api = Iota(node)
 
     # reads in the encoded messages from the tangle.
+    print("Reading reference song list from the Tangle...")
     encoded_message_list = get_tangle_info(spent_transactions, api, address)
 
     # decodes the reference list, processes, displays.
     decoded_message = decode_message_list(encoded_message_list, REFERENCE_LIST_DECODER_CHAR)
     reference_list = make_message_list(decoded_message, REFERENCE_LIST_DECODER_CHAR)
-    display_song_list(reference_list)
-    print(reference_list)
+    
     
     # decodes the play list, processes, displays.
-    decoded_message = decode_message_list(encoded_message_list, PLAY_LIST_DECODER_CHAR)
-    play_list = make_message_list(decoded_message, PLAY_LIST_DECODER_CHAR)
-    display_song_list(play_list)
-    print(play_list)
+    #decoded_message = decode_message_list(encoded_message_list, PLAY_LIST_DECODER_CHAR)
+    #play_list = make_message_list(decoded_message, PLAY_LIST_DECODER_CHAR)
+    #display_song_list(play_list)
+    #print(play_list)
     
     # sends a song out to the tangle. comment out when not desired.
-    song = reference_list[3]
-    vote_for_song(song, address, api)
+    while True:
+        print("Here is the reference song list:")
+        display_song_list(reference_list)
+        print()
+        user_input = input("Please choose a song with a number, or type 'exit' to quit: ")
+        if user_input == "exit":
+            break
+        if int(user_input) >= 0 and int(user_input) < len(reference_list):
+            song = reference_list[int(user_input)]
+            print("Sending a vote for " + song + " on the Tangle")
+            print()
+            vote_for_song(song, address, api)
 
 def get_tangle_info(spent_transactions, api, address):
     """reads in transactions from the tangle. if the tag has already
     been read, it is not processed. the messages are returned in a list"""
+    
     message_list = []
     transaction_dict = api.find_transactions(bundles=None, \
                         addresses=[address], tags=None, approvees=None)
@@ -49,6 +62,8 @@ def get_tangle_info(spent_transactions, api, address):
         if transaction.tag not in spent_transactions:
             message_list.append(transaction.signature_message_fragment)
             spent_transactions[transaction.tag] = 0
+    print("Tangle info successfully loaded")
+    print()
     return message_list
 
 def decode_message_list(message_list, decoder_char):
@@ -56,7 +71,6 @@ def decode_message_list(message_list, decoder_char):
     contains the decoder_char sequence"""
     for message in message_list:
         message = message.decode()
-        print(message)
         for i in range(len(message)):
             if message[i] == decoder_char and \
                message[i+1] == decoder_char:
@@ -100,11 +114,10 @@ def vote_for_song(song, address, api):
     random_tag = make_random_tag()
     song = "??" + song + "??"
     song = TryteString.from_unicode(song)
-    print(song)
     send_confirmation = False
     while not send_confirmation:
         try:
-            print("try")
+            print("Sending song vote to the Tangle")
             api.send_transfer(
               depth = 100,
               transfers = [
@@ -119,9 +132,12 @@ def vote_for_song(song, address, api):
                 ),
               ],
             )
+            print("The song vote was successfully attached to the Tangle")
+            print()
             send_confirmation = True
         except:
-            print("except")
+            print("Error: Retrying tangle attachment")
+            print()
             time.sleep(2)
             pass
     

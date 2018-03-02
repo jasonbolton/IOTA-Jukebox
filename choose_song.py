@@ -55,7 +55,9 @@ class ChooseSong:
         if len(self._play_list) < 1:
             reference_length = len(self._reference_list)
             rand_int = random.randint(0, reference_length - 1)
+            print("No song votes found - playing random song:")
             print(self._reference_list[rand_int])
+            print()
             return self._reference_list[rand_int]
         next_song = self._play_list[0]
         self._play_list.pop(0)

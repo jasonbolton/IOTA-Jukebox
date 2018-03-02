@@ -31,7 +31,7 @@ class MessageSender:
         send_confirmation = False
         while not send_confirmation:
             try:
-                print("try")
+                print("Sending reference song list to the tangle...")
                 self._api.send_transfer(
                   depth = 100,
                   transfers = [
@@ -47,8 +47,11 @@ class MessageSender:
                   ],
                 )
                 send_confirmation = True
+                print("The reference song list was successfully attached to the tangle")
+                print()
             except:
-                print("except")
+                print("Error: Retrying tangle attachment")
+                print()
                 time.sleep(2)
                 pass
             

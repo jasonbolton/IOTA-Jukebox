@@ -22,27 +22,28 @@ def main():
     reference_list = os.listdir(song_file_path)
     # iota address to monitor. if using the same address, old songs will be loaded to playlist.
     #address = input("Enter IOTA address to broadcast to: ")
-    address = 'BJAKMIXYBLAAPKLBCGHELQCSKOMZLSAYLOHDBOYRJFQJIHBWCCCIUBVLQKYPTHWVBQWTZM9JGMAPFUCBCBCSRTKJLY'
-    print("The broadcast address is: " + address)
-    print()
+    #address = 'BJAKMIXYBLAAPKLBCGHELQCSKOMZLSAYLOHDBOYRJFQJIHBWCCCIUBVLQKYPTHWVBQWTZM9JGMAPFUCBCBCSRTKJLY'
+    
     # any node can be chosen.
-    node = 'http://node03.iotatoken.nl:15265'
+    #node = 'http://node03.iotatoken.nl:15265'
 
-    listener = TransactionMonitor(address, node, finished_transactions, MINIMUM_TRANSACTION_VALUE)
+    listener = TransactionMonitor(finished_transactions, MINIMUM_TRANSACTION_VALUE)
+    address = listener.get_address()
+    print("The broadcast address is: " + str(address))
+    print()
     chooser = ChooseSong(reference_list, song_file_path)
     send_bot = MessageSender(address)
     encoder = Encoder()
-
-    # send a message to the tangle with the encoded reference list.
-    #encoded_list = encoder.encode_reference_list(reference_list)
-    #send_bot.send_message(encoded_list)
-    #print("The reference song list was successfully attached to the tangle")
-
+    
     reference_list = chooser.determine_valid_format(reference_list)
     print("The reference song list is:")
     print(reference_list)
     print()
 
+    # send a message to the tangle with the encoded reference list.
+    encoded_list = encoder.encode_reference_list(reference_list)
+    send_bot.send_message(encoded_list)
+        
     song_value_list, transaction_time = listener.get_transactions()
     song_value_list = encoder.decode_list(song_value_list)
 

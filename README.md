@@ -6,11 +6,13 @@ This program reads in song info from a folder on your computer. The program send
 
 Dependencies
 
-This program was made with Python 3.6.4. To run this program, pyota needs to be installed. 
+This program was made with Python 3.6.4. To run this program, pyota needs to be installed. You will also need to install tinytag.
 
 You can find pyota at: https://github.com/iotaledger/iota.lib.py
 
 You can find python at https://www.python.org/downloads/
+
+You can install tinytag with 'pip install tinytag'
 
 
 Todo: 

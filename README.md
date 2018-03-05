@@ -18,6 +18,6 @@ You can install tinytag with 'pip install tinytag'
 Todo: 
 ```
 -General improvements
--Make GUI - Try kivy
+-Make GUI - I'm working on this now! It's difficult and taking a while!
 -Implement qr generator after GUI
 ```

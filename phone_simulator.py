@@ -116,7 +116,7 @@ def vote_for_song(song, address, api):
     send_confirmation = False
     while not send_confirmation:
         try:
-            print("Sending song vote to the Tangle")
+            print("Sending song vote to the Tangle...")
             api.send_transfer(
               depth = 100,
               transfers = [

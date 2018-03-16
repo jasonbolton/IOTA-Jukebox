@@ -1,4 +1,4 @@
-# IOTA Jukebox - Proof of concept software for action selection through IOTA transactions, value transfer optional
+# IOTA Jukebox - Software for song selection using the IOTA Tangle.
 
 Instructions
 
@@ -13,11 +13,3 @@ You can find pyota at: https://github.com/iotaledger/iota.lib.py
 You can find python at https://www.python.org/downloads/
 
 You can install tinytag with 'pip install tinytag'
-
-
-Todo: 
-```
--General improvements
--Make GUI - I'm working on this now! It's difficult and taking a while!
--Implement qr generator after GUI
-```

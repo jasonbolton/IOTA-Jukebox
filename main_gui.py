@@ -134,7 +134,7 @@ class StartPage(tk.Frame):
             self._address_entry.delete(0, tk.END)
             self._address_entry.insert(0, self._address)
             self._send_bot = MessageSender(self._address)
-            #self.send_play_list()
+            self.send_play_list()
             self.refresh_votes()
 
     def send_play_list(self):

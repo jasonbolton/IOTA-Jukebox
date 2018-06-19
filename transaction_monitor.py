@@ -1,9 +1,8 @@
-from iota import *
-import time
+from iota import * 
 
 class TransactionMonitor:
-    """this class monitors an address on the tangle
-    for song votes."""
+    # this class monitors an address on the tangle
+    # for song votes.
     def __init__(self, finished_transactions):
         self._node = 'http://nodes.iota.fm:80'
         self._api = Iota(self._node)
@@ -15,17 +14,20 @@ class TransactionMonitor:
         return self._address
     
     def set_address(self):
+        # sets an address to the class attibutes.
         gna_result = self._api.get_new_addresses()
         address = gna_result['addresses'][0]
         return address
 
     def change_address(self, new_address):
+        # swaps the class attribute address with a
+        # user-provided address.
         self._address = new_address
 
     def extract_song(self, string):
-        """given a string message, this function
-        decodes and removes non-song information
-        and returns the cleaned string."""
+        # given a string message, this function
+        # decodes and removes non-song information
+        # and returns the cleaned string.
         song_name = ""
         for letter in string:
             if letter != "9":
@@ -34,13 +36,13 @@ class TransactionMonitor:
         return song_name
 
     def get_transactions(self):
-        """this method cycles through the transactions
-        on an address in the tangle. if the transaction
-        tag is in the dictionary self._finished_transactions,
-        the message is not processed. if not, the message is
-        stripped to access the song data. the data is added
-        to a list to be returned and the tag is added to finished
-        transactions, along with a time-stamp of finish-time."""
+        # this method cycles through the transactions
+        # on an address in the tangle. if the transaction
+        # tag is in the dictionary self._finished_transactions,
+        # the message is not processed. if not, the message is
+        # stripped to access the song data. the data is added
+        # to a list to be returned and the tag is added to finished
+        # transactions, along with a time-stamp of finish-time.
         print("Searching the tangle for song votes...")
         self._new_transactions = []
         transaction_dict = self._api.find_transactions(bundles=None, \

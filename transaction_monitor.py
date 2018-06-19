@@ -4,14 +4,10 @@ import time
 class TransactionMonitor:
     """this class monitors an address on the tangle
     for song votes."""
-    def __init__(self, finished_transactions, address=None):
+    def __init__(self, finished_transactions):
         self._node = 'http://nodes.iota.fm:80'
         self._api = Iota(self._node)
-        if address == None:
-            self._address = self.set_address()
-        else:
-            self._address = address
-        
+        self._address = self.set_address()     
         self._finished_transactions = finished_transactions
         self._new_transactions = []
 
@@ -22,6 +18,9 @@ class TransactionMonitor:
         gna_result = self._api.get_new_addresses()
         address = gna_result['addresses'][0]
         return address
+
+    def change_address(self, new_address):
+        self._address = new_address
 
     def extract_song(self, string):
         """given a string message, this function

@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, scrolledtext
 from transaction_monitor import TransactionMonitor
-from choose_song import ChooseSong
-from encoder import Encoder
 from transaction_send_bot import MessageSender
 import webbrowser
 import os
@@ -25,22 +23,23 @@ class App(tk.Tk):
         self._frame.pack()
 
 class StartPage(tk.Frame):
-    # todo
+    # main page of the jukebox program
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        
+
+        # initalizing the variables.
         self._jukebox_state = False
         self._song_location = ""
         self._address = ""
         self._play_list = []
         self._vote_list = []
         self._finished_transactions = {}
-        
-        self._listener = TransactionMonitor(self._finished_transactions)
-        self._chooser = None
-        self._send_bot = None
-        self._encoder = Encoder()
 
+        # initializing the class objects.
+        self._listener = TransactionMonitor(self._finished_transactions)
+        self._send_bot = None
+
+        # creating the ui elements.
         self._location_label = tk.Label(self, \
                                         text="Enter location of songs on the computer:")
         self._get_songs_button = tk.Button(self, text="Choose Location",
@@ -64,6 +63,7 @@ class StartPage(tk.Frame):
         self._end_button = tk.Button(self, text="End Program",
                                  command=lambda: app.destroy())
 
+        # packing the ui elements
         self._location_label.grid(row=1, column=1)
         self._get_songs_button.grid(row=2, column=1)
         
@@ -82,26 +82,33 @@ class StartPage(tk.Frame):
         self._end_button.grid(row=8, column=1)
 
     def play_next_song(self):
+        # if the jukebox is running, the next song is taken from
+        # the vote list and played.
         if self._jukebox_state == True:
-            print("play it, sam")
-            if self._vote_list != []:
-                print("there are songs")
-            else:
-                print("play random song")
+            next_song = self._vote_list[len(self._vote_list)-1]
+            print(next_song)
+            self._vote_list = self._vote_list[0:len(self._vote_list)-1]
+            self.refresh_votes()
+            print(self._song_location + next_song)
+            webbrowser.open(self._song_location + "/" + next_song)
 
     def get_file_location(self):
+        # if the jukebox is not playing, a choose directory will
+        # pop up to choose the song directory, and the file path
+        # will be saved.
         if self._jukebox_state == False:
             self._song_location = filedialog.askdirectory(initialdir \
                                     = "/",title = "Select file")
             self._location_entry.delete(0, tk.END)
             self._location_entry.insert(0, self._song_location)
             self._play_list = os.listdir(self._song_location)
-            self._chooser = ChooseSong(self._play_list, self._song_location)
-            self._play_list = self._chooser.determine_valid_format(self._play_list)
-            self.reprint_play_list()
+            self._play_list = self.determine_valid_format()
+            self.print_play_list()
             print(self._song_location)
         
-    def reprint_play_list(self):
+    def print_play_list(self):
+        # prints the play list to the play list scrolled
+        # text box.
         self._play_list_box.config(state="normal")
         self._play_list_box.delete(0.0, tk.END)
         self._play_list = self._play_list[::-1]
@@ -113,6 +120,9 @@ class StartPage(tk.Frame):
 
 
     def start_jukebox(self):
+        # turns the jukebox state on if the song location is not empty
+        # and the jukebox is off. the address is loaded and the play list
+        # is sent to the tangle. the votes are then printed to the vote box.
         if self._song_location != "" and self._jukebox_state == False:
             self._jukebox_state = True
             print(self._address)
@@ -120,7 +130,7 @@ class StartPage(tk.Frame):
                 self._address = self._listener.get_address()
             else:
                 self._address = self._address_entry.get()
-            self._listener = TransactionMonitor(self._finished_transactions, self._address)
+                self._listener.change_address(self._address)
             self._address_entry.delete(0, tk.END)
             self._address_entry.insert(0, self._address)
             self._send_bot = MessageSender(self._address)
@@ -129,35 +139,39 @@ class StartPage(tk.Frame):
 
     def send_play_list(self):
         # send a message to the tangle with the encoded play list.
-        encoded_play_list = self._encoder.encode_reference_list(self._play_list)
-        print(encoded_play_list)
-        print(self._play_list)
-        print("gonna send")
+        encoded_play_list = self._send_bot.encode_play_list(self._play_list)
         self._send_bot.send_message(encoded_play_list)
-        print("The song playlist was successfully attached to the tangle")
 
     def refresh_votes(self):
+        # reads in song votes from the tangle and reprints
+        # the play list to the vote box.
         if self._jukebox_state == True:
-            temp_list = self._encoder.decode_list(self._listener.get_transactions())
+            temp_list = self._send_bot.decode_list(self._listener.get_transactions())
             for song in temp_list:
                 self._vote_list.append(song) 
             print(self._vote_list)
             self._vote_list_box.config(state="normal")
             self._vote_list_box.delete(0.0, tk.END)
-           
             for song in self._vote_list:
                 self._vote_list_box.insert(0.0, "\n")
                 self._vote_list_box.insert(0.0, song)
             self._vote_list_box.config(state="disabled")
-           
-            
-    def play_next_song(self):
-        next_song = self._vote_list[len(self._vote_list)-1]
-        print(next_song)
-        self._vote_list = self._vote_list[0:len(self._vote_list)-1]
-        self.refresh_votes()
-        print(self._song_location + next_song)
-        webbrowser.open(self._song_location + "/" + next_song)
+
+    def determine_valid_format(self):
+        # loops through the incoming song reference
+        # list to determine if the file format is valid
+        # for playing as an audio file.
+        valid_song_list = []
+        for song in self._play_list:
+            if "." in song:
+                possible_song = song
+                possible_song = possible_song[::-1]
+                possible_song = possible_song.split(".")
+                file_format = possible_song[0][::-1]
+                if file_format == "m4a" or \
+                   file_format == "mp3":
+                    valid_song_list.append(song)
+        return valid_song_list
 
 if __name__ == "__main__":
     app = App()

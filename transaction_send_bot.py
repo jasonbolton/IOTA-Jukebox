@@ -22,6 +22,32 @@ class MessageSender:
             excess = len(construct_tag) - 27
             construct_tag = construct_tag[excess:]
         return construct_tag
+
+    def encode_play_list(self, play_list):
+        # encodes the song play list to send to the tangle.
+        encoded_play_list = "**"
+        for song in play_list:
+            encoded_play_list += song
+            encoded_play_list += "*"
+        encoded_play_list += "*"
+        encoded_play_list = TryteString.from_unicode(encoded_play_list)
+        return encoded_play_list
+
+    def decode_list(self, song_list):
+        # decodes a list of messages from the tangle. if the
+        # song contains the song trytes 'IBIB' they're added to
+        # the decoded_list to be played.
+        decoded_list = []
+        for song in song_list:
+            if "IBIB" in song:
+                song = TryteString.from_unicode(song)
+                song = song.decode()
+                song = song.strip("??")
+                decoded_list.append(song)
+        print("The new song votes found on the tangle are:")
+        print(decoded_list)
+        print()
+        return decoded_list
     
     def send_message(self, message):
         """a random tag transaction with a passed-in

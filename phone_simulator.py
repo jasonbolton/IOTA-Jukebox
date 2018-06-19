@@ -17,7 +17,7 @@ def main():
     print()
     
     # a proof of work node is required.
-    node = 'https://iotanode.us:443'
+    node = 'http://nodes.iota.fm:80'
     api = Iota(node)
 
     # reads in the encoded messages from the tangle.
@@ -33,6 +33,7 @@ def main():
     #play_list = make_message_list(decoded_message, PLAY_LIST_DECODER_CHAR)
     #display_song_list(play_list)
     #print(play_list)
+    #random address: VYHCD9OGVIFT9RBWV9FWXOYPOJVNROYUSNNEHCLYOSMHTHCQIXZRIWUPNXZZUESMNUMXSJFVSMHDJQ99X
     
     # sends a song out to the tangle. comment out when not desired.
     while True:

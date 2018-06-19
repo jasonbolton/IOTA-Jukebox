@@ -4,28 +4,24 @@ import time
 class TransactionMonitor:
     """this class monitors an address on the tangle
     for song votes."""
-    def __init__(self, finished_transactions, minimum_value):
-        self._node = 'http://node03.iotatoken.nl:15265'
+    def __init__(self, finished_transactions, address=None):
+        self._node = 'http://nodes.iota.fm:80'
         self._api = Iota(self._node)
-        self._address = self.set_address()
+        if address == None:
+            self._address = self.set_address()
+        else:
+            self._address = address
         
         self._finished_transactions = finished_transactions
-        self._minimum_value = minimum_value
         self._new_transactions = []
 
+    def get_address(self):
+        return self._address
+    
     def set_address(self):
         gna_result = self._api.get_new_addresses()
         address = gna_result['addresses'][0]
         return address
-
-    def get_address(self):
-        return self._address
-
-    def get_node(self):
-        return self._node
-
-    def get_finished_transactions(self):
-        return self._node
 
     def extract_song(self, string):
         """given a string message, this function
@@ -53,14 +49,13 @@ class TransactionMonitor:
         for transaction_hash in transaction_dict['hashes']:
             trytes = self._api.get_trytes([transaction_hash])['trytes'][0]
             transaction = Transaction.from_tryte_string(trytes)
-            if transaction.tag not in self._finished_transactions and \
-               transaction.value >= self._minimum_value:
+            if transaction.tag not in self._finished_transactions:
                 self._finished_transactions[transaction.tag] = 0
                 song = self.extract_song(str(transaction.signature_message_fragment))
                 self._new_transactions.append(song)
         print("Complete")
         print()
-        return self._new_transactions, time.time()
+        return self._new_transactions
         
 
 

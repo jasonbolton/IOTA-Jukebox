@@ -8,7 +8,7 @@ class MessageSender:
     is required."""
     def __init__(self, send_address):
         self._send_address = send_address
-        self._api = Iota('https://iotanode.us:443')
+        self._api = Iota('http://nodes.iota.fm:80')
 
     def make_random_tag(self):
         """this method constructs a random tag to include

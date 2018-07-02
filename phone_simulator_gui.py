@@ -160,7 +160,7 @@ class StartPage(tk.Frame):
             try:
                 print("Sending song vote to the Tangle...")
                 self._api.send_transfer(
-                  depth = 100,
+                  depth = 3,
                   transfers = [
                     ProposedTransaction(
                       address =

@@ -59,7 +59,7 @@ class MessageSender:
             try:
                 print("Sending reference song list to the tangle...")
                 self._api.send_transfer(
-                  depth = 100,
+                  depth = 3,
                   transfers = [
                     ProposedTransaction(
                       address =
